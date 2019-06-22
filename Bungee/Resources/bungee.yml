@@ -1,0 +1,5 @@
+name: VoterSystem
+main: com.ericlam.mc.votesystem.main.VoterSystemBungee
+version: 1.0.0-SNAPSHOT
+author: Hydranapse_
+description: Server Voting Plugin

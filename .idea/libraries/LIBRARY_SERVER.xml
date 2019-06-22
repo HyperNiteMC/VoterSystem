@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="LIBRARY-SERVER">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../LIBRARY-SERVER/Paper-1.14.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../LIBRARY-PLUGINS/Vault.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../HyperNiteMC-Core/API/target/HyperNiteMC-API.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../LIBRARY-SERVER/Paper-1.14.2.jar!/" />
+    </SOURCES>
+  </library>
+</component>
