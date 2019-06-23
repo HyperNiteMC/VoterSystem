@@ -6,7 +6,7 @@ public class ReflectionRedis {
 
 
     public static RedisData getRedisData(boolean bungee) throws Exception{
-        Class<?> mainClass = Class.forName(bungee ? "com.ericlam.mc.bungee.hnmc.main.HyperNiteMC" : "com.ericlam.mc.hnmc.core.main.HyperNiteMC");
+        Class<?> mainClass = Class.forName(bungee ? "com.ericlam.mc.bungee.hnmc.main.HyperNiteMC" : "com.hypernite.mc.hnmc.core.main.HyperNiteMC");
         Method getAPIMethod = mainClass.getMethod("getAPI");
         Object apiInstance = getAPIMethod.invoke(null);
         Class<?> apiClass = apiInstance.getClass();
