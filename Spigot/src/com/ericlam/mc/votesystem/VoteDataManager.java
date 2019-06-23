@@ -17,6 +17,7 @@ import java.util.UUID;
 public class VoteDataManager {
     private static VoteDataManager voteDataManager;
     private Map<UUID, VoteData> voteDataMap = new HashMap<>();
+    private List<String> rewardCommands;
 
 
     public static VoteDataManager getInstance() {
@@ -27,13 +28,17 @@ public class VoteDataManager {
     private VoteDataManager() {
     }
 
+    public List<String> getRewardCommands() {
+        return rewardCommands;
+    }
 
     public void initializeRedis(Plugin plugin, String server){
         try(Jedis redis = RedisManager.getInstance().getRedis()){
             Subscription subscribe = Subscription.getInstance();
-            subscribe.setJedisPubSub(new ChannelListener());
+            subscribe.setJedisPubSub(new ChannelListener(server));
             JedisPubSub sub = subscribe.getJedisPubSub();
             redis.subscribe(sub, "Vote-Slave", "Vote-"+server);
+            this.rewardCommands = redis.lrange("Vote-Reward-Command", 0, -1);
         }catch (JedisException e){
             plugin.getLogger().warning("Cannot connect to jedis server, disabling this plugin");
             plugin.getServer().getPluginManager().disablePlugin(plugin);
@@ -49,23 +54,37 @@ public class VoteDataManager {
 
     @Nonnull
     public VoteData getVoteDataFromRedis(UUID player){
-        VoteData voteData;
-        try(Jedis jedis = RedisManager.getInstance().getRedis()){
-            List<String> list = jedis.hmget(player.toString(),"vote","is-voted-today");
-            if (list.size() != 2) voteData = new VoteData(0, false);
-            else{
-                boolean voted = Boolean.parseBoolean(list.get(1));
-                int vote;
-                try{
-                    vote = Integer.parseInt(list.get(0));
-                }catch (NumberFormatException e){
-                    vote = 0;
-                }
+        try (Jedis jedis = RedisManager.getInstance().getRedis()) {
+            return this.getVoteDataFromRedis(jedis, player);
+        }
+    }
 
-                voteData = new VoteData(vote, voted);
+    @Nonnull
+    private VoteData getVoteDataFromRedis(Jedis jedis, UUID player) {
+        VoteData voteData;
+        List<String> list = jedis.hmget(player.toString(), "vote", "is-voted-today");
+        if (list.size() != 2) voteData = new VoteData(0, false);
+        else {
+            boolean voted = Boolean.parseBoolean(list.get(1));
+            int vote;
+            try {
+                vote = Integer.parseInt(list.get(0));
+            } catch (NumberFormatException e) {
+                vote = 0;
             }
-            voteDataMap.put(player, voteData);
-            return voteData;
+
+            voteData = new VoteData(vote, voted);
+        }
+        voteDataMap.put(player, voteData);
+        return voteData;
+    }
+
+    public void getVoteDataFromRedis() {
+        try (Jedis jedis = RedisManager.getInstance().getRedis()) {
+            for (UUID player : voteDataMap.keySet()) {
+                this.getVoteDataFromRedis(jedis, player);
+            }
+            this.rewardCommands = jedis.lrange("Vote-Reward-Command", 0, -1);
         }
     }
 

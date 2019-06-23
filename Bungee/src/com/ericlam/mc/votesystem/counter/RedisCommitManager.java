@@ -33,21 +33,21 @@ public class RedisCommitManager {
     public void commitVote(UUID player, int vote){
         try(Jedis jedis = RedisManager.getInstance().getRedis()){
             jedis.hset(player.toString(),"vote",vote+"");
-            this.notifyUpdate(jedis);
+            this.notifyUpdate(jedis, player);
         }
     }
 
     public void commitVotedToday(UUID player, boolean voted){
         try(Jedis jedis = RedisManager.getInstance().getRedis()){
             jedis.hset(player.toString(),"is-voted-today",voted+"");
-            this.notifyUpdate(jedis);
+            this.notifyUpdate(jedis, player);
         }
     }
 
     public void commitStats(UUID player, VoteStats stats){
         try(Jedis jedis = RedisManager.getInstance().getRedis()){
              this.commitSingle(jedis, player, stats);
-             this.notifyUpdate(jedis);
+            this.notifyUpdate(jedis, player);
         }
     }
 
@@ -86,8 +86,19 @@ public class RedisCommitManager {
         }
     }
 
+    public void notifyUpdate(UUID player) {
+        try (Jedis jedis = RedisManager.getInstance().getRedis()) {
+            jedis.publish("Vote-Slave", "UPDATE_" + player.toString());
+        }
+    }
+
+
     private void notifyUpdate(Jedis jedis){
         jedis.publish("Vote-Slave","UPDATE");
+    }
+
+    private void notifyUpdate(Jedis jedis, UUID player) {
+        jedis.publish("Vote-Slave", "UPDATE_" + player.toString());
     }
 
     public void publish(ProxiedPlayer player, int votes){
