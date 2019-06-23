@@ -1,6 +1,6 @@
 package com.ericlam.mc.votesystem;
 
-import com.ericlam.mc.votersystem.global.RedisManager;
+import com.ericlam.mc.votesystem.global.RedisManager;
 import com.ericlam.mc.votesystem.redis.ChannelListener;
 import com.ericlam.mc.votesystem.redis.Subscription;
 import org.bukkit.plugin.Plugin;

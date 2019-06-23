@@ -1,7 +1,7 @@
 package com.ericlam.mc.votesystem.counter;
 
 import com.ericlam.mc.bungee.hnmc.config.ConfigManager;
-import com.ericlam.mc.votersystem.global.RedisManager;
+import com.ericlam.mc.votesystem.global.RedisManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisException;

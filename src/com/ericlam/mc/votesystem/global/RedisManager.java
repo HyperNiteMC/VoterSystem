@@ -1,4 +1,4 @@
-package com.ericlam.mc.votersystem.global;
+package com.ericlam.mc.votesystem.global;
 
 
 import redis.clients.jedis.Jedis;
