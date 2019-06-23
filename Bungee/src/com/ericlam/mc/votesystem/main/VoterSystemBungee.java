@@ -54,6 +54,8 @@ public class VoterSystemBungee extends Plugin {
         this.getProxy().getPluginManager().registerListener(this, new VotingListener());
 
         this.launchAnnouncement();
+
+        this.getLogger().info("VoteSystem Enabled.");
     }
 
     @Override

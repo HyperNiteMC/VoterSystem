@@ -1,6 +1,7 @@
 package com.ericlam.mc.votesystem;
 
 import com.ericlam.mc.votesystem.global.RedisManager;
+import com.ericlam.mc.votesystem.main.VoterSystemSpigot;
 import com.ericlam.mc.votesystem.redis.ChannelListener;
 import com.ericlam.mc.votesystem.redis.Subscription;
 import org.bukkit.plugin.Plugin;
@@ -35,7 +36,7 @@ public class VoteDataManager {
     public void initializeRedis(Plugin plugin, String server){
         try(Jedis redis = RedisManager.getInstance().getRedis()){
             Subscription subscribe = Subscription.getInstance();
-            subscribe.setJedisPubSub(new ChannelListener(server));
+            subscribe.setJedisPubSub(new ChannelListener());
             JedisPubSub sub = subscribe.getJedisPubSub();
             redis.subscribe(sub, "Vote-Slave", "Vote-"+server);
             this.rewardCommands = redis.lrange("Vote-Reward-Command", 0, -1);
@@ -62,6 +63,7 @@ public class VoteDataManager {
     @Nonnull
     private VoteData getVoteDataFromRedis(Jedis jedis, UUID player) {
         VoteData voteData;
+        VoterSystemSpigot.debug("Getting " + player.toString() + " data from redis");
         List<String> list = jedis.hmget(player.toString(), "vote", "is-voted-today");
         if (list.size() != 2) voteData = new VoteData(0, false);
         else {

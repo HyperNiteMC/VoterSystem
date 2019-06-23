@@ -1,6 +1,6 @@
 package com.ericlam.mc.votesystem;
 
-import com.ericlam.mc.votesystem.main.VoterSystemSpigot;
+import com.hypernite.mc.hnmc.core.managers.ConfigManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -9,14 +9,16 @@ import java.util.UUID;
 
 public class VoteDataPlaceHolder extends PlaceholderExpansion {
 
-    private static final String YES = VoterSystemSpigot.getConfigManager().getPureMessage("voted-today.yes");
-    private static final String NO = VoterSystemSpigot.getConfigManager().getPureMessage("voted-today.no");
+    private final String YES;
+    private final String NO;
     private Plugin plugin;
     private VoteDataManager voteDataManager;
 
-    public VoteDataPlaceHolder(Plugin plugin) {
+    public VoteDataPlaceHolder(Plugin plugin, ConfigManager configManager) {
         this.plugin = plugin;
         this.voteDataManager = VoteDataManager.getInstance();
+        this.YES = configManager.getPureMessage("voted-today.true");
+        this.NO = configManager.getPureMessage("voted-today.false");
     }
 
     @Override

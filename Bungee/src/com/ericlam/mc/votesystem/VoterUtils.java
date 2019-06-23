@@ -38,15 +38,22 @@ public class VoterUtils {
         VoterSystemBungee.getInstance().getLogger().info(msg);
     }
 
+    public static void debug(String msg) {
+        if (!VoterSystemBungee.getConfigManager().getData("debug", Boolean.class).orElse(false)) return;
+        log(msg);
+    }
+
     public static void warn(String msg){
         VoterSystemBungee.getInstance().getLogger().info(msg);
     }
 
     public static void reward(ProxiedPlayer voter,int votes){
+        VoterUtils.debug("rewarding " + voter.getName());
         ConfigManager configManager = VoterSystemBungee.getConfigManager();
         RedisCommitManager redisCommitManager = RedisCommitManager.getInstance();
         boolean broadcast = configManager.getData("rbc",Boolean.class).orElse(false);
-        if (broadcast) VoterUtils.getWhiteListPlayers().forEach(p-> MessageBuilder.sendMessage(p, configManager.getMessage("reward.broadcast-message")));
+        if (broadcast)
+            VoterUtils.getWhiteListPlayers().forEach(p -> MessageBuilder.sendMessage(p, configManager.getMessage("reward.broadcast-message").replace("<name>", voter.getName())));
         new MessageBuilder(configManager.getMessageList("reward.messages",true)).sendPlayer(voter);
         redisCommitManager.publish(voter, votes);
     }

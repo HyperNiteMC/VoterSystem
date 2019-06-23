@@ -1,6 +1,7 @@
 package com.ericlam.mc.votesystem.counter;
 
 import com.ericlam.mc.bungee.hnmc.main.HyperNiteMC;
+import com.ericlam.mc.votesystem.VoterUtils;
 import com.ericlam.mc.votesystem.mysql.VoteTable;
 
 import javax.annotation.Nonnull;
@@ -31,9 +32,10 @@ public class VoteMySQLManager {
     @Nonnull
     public VoteStats getPlayerVote(UUID playerUniqueId){
         if (voteStatsManager.containVote(playerUniqueId)) return voteStatsManager.getVote(playerUniqueId);
-        String stmt = voteTable.selectStatment(playerUniqueId);
+        String stmt = "SELECT * FROM `Vote_stats` WHERE `PlayerUUID`=?";
         try(Connection connection = HyperNiteMC.getAPI().getSQLDataSource().getConnection();
             PreparedStatement statement = connection.prepareStatement(stmt)){
+            statement.setString(1, playerUniqueId.toString());
             ResultSet resultSet = statement.executeQuery();
             VoteStats stats;
             if (resultSet.next()){
@@ -42,9 +44,10 @@ public class VoteMySQLManager {
                 int queueVote = resultSet.getInt("Queued");
                 stats = new VoteStats(vote, time, queueVote);
             }else{
+                VoterUtils.debug("player don't have vote data, create one...");
                 stats =  new VoteStats(0,0,0);
             }
-            voteStatsManager.putVote(playerUniqueId,stats);
+            voteStatsManager.putVote(playerUniqueId, stats);
             redisCommitManager.commitStats(playerUniqueId, stats);
             return stats;
         } catch (SQLException e) {
@@ -80,9 +83,13 @@ public class VoteMySQLManager {
     private void saveVote(Connection connection, UUID playerUniqueId, VoteStats stats) throws SQLException {
         String insertPrepare = voteTable.prepareInsert();
         try(PreparedStatement statement = connection.prepareStatement(insertPrepare)){
-            if (stats.isNotChanged()) return;
-            voteTable.setPrepareStatment(statement,playerUniqueId,stats);
-            statement.execute();
+            if (stats.isNotChanged()) {
+                return;
+            }
+            if (voteTable.setPrepareStatment(statement, playerUniqueId, stats)) {
+                statement.execute();
+                VoterUtils.debug("Saved " + playerUniqueId.toString() + "'s data.");
+            }
         }
     }
 

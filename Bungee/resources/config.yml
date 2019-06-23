@@ -20,6 +20,9 @@ vote-messages:
   - "   &ahttps://hypernite.com"
 
 
+debug: true
+
+
 # only these servers will enable voting
 whitelist-servers:
   - Lobby
@@ -38,3 +41,4 @@ messages:
   remove: "已成功扣減 <amount> 票 予 <name> , 他/她目前票數為 <vote>。"
   zero: "<name> 的票數目前已是 0。"
   cancel: "成功解除 <name> 的冷卻狀態。"
+  already-cancel: "<name> 目前並無冷卻狀態"

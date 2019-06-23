@@ -10,12 +10,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class VoterSystemSpigot extends JavaPlugin {
 
-    private static ConfigManager configManager;
     public static Plugin plugin;
 
+    private static ConfigManager configManager;
 
-    public static ConfigManager getConfigManager() {
-        return configManager;
+    public static void debug(String msg) {
+        if (!configManager.getData("debug", Boolean.class).orElse(false)) return;
+        plugin.getLogger().info("[DEBUG] " + msg);
     }
 
     @Override
@@ -25,11 +26,13 @@ public class VoterSystemSpigot extends JavaPlugin {
         configManager.setMsgConfig("server.yml");
         String server = configManager.getData("server", String.class).orElse("Unknown");
 
+        System.out.println(server);
+
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> VoteDataManager.getInstance().initializeRedis(this, server));
 
         if (this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             this.getLogger().info("Found PlaceHolderAPI, Hooking...");
-            new VoteDataPlaceHolder(this).register();
+            new VoteDataPlaceHolder(this, configManager).register();
         }
 
         this.getLogger().info(this.getDescription().getFullName() + " Enabled.");

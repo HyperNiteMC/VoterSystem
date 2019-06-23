@@ -4,3 +4,5 @@ server-name: Lobby
 voted-today:
   yes: "&e已經投票"
   no: "&a尚未投票"
+
+debug: true

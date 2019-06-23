@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VoterSystem">
+    <output-path>$PROJECT_DIR$/../../../Studio Production/2019/bungee/plugins</output-path>
+    <root id="archive" name="VoterSystem.jar">
+      <element id="module-output" name="Bungee" />
+      <element id="module-output" name="Spigot" />
+      <element id="module-output" name="VoterSystem" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../LIBRARY-OTHERS/commons-pool2-2.6.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../LIBRARY-OTHERS/jedis-3.1.0-m1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../LIBRARY-OTHERS/sqlbuilder-3.0.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

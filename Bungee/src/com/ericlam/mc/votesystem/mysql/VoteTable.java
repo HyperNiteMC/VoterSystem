@@ -1,5 +1,7 @@
 package com.ericlam.mc.votesystem.mysql;
 
+import com.ericlam.mc.bungee.hnmc.container.OfflinePlayer;
+import com.ericlam.mc.bungee.hnmc.main.HyperNiteMC;
 import com.ericlam.mc.votesystem.counter.VoteStats;
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
 import com.healthmarketscience.sqlbuilder.CreateTableQuery;
@@ -9,11 +11,13 @@ import com.healthmarketscience.sqlbuilder.custom.HookType;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSpec;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
-import net.md_5.bungee.api.ProxyServer;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+
 /*
     Using SQL Query Builders v3.0.0
 
@@ -54,26 +58,37 @@ public class VoteTable {
                 this.queued.getColumnNameSQL() + "=?";
     }
 
-    public void setPrepareStatment(PreparedStatement statement, UUID player, VoteStats voteStats) throws SQLException {
+    public boolean setPrepareStatment(PreparedStatement statement, UUID player, VoteStats voteStats) throws SQLException {
         String uuid = player.toString();
-        String name = ProxyServer.getInstance().getPlayer(player).getName();
-        int votes = voteStats.getVotes();
-        long timestamp = voteStats.getTimeStamp();
-        int queued = voteStats.getQueueVote();
-        statement.setString(1,uuid);
-        statement.setString(2,name);
-        statement.setInt(3,votes);
-        statement.setLong(4,timestamp);
-        statement.setInt(5,queued);
-        statement.setString(6,name);
-        statement.setInt(7,votes);
-        statement.setLong(8,timestamp);
-        statement.setInt(9,queued);
-
+        try {
+            System.out.println("statement uuid:" + player.toString());
+            Optional<OfflinePlayer> offlinePlayer = HyperNiteMC.getAPI().getPlayerManager().getOfflinePlayer(player).get();
+            if (offlinePlayer.isEmpty()) {
+                System.out.println("offlineplayer is empty");
+                return false;
+            }
+            String name = offlinePlayer.get().getName();
+            int votes = voteStats.getVotes();
+            long timestamp = voteStats.getTimeStamp();
+            int queued = voteStats.getQueueVote();
+            statement.setString(1, uuid);
+            statement.setString(2, name);
+            statement.setInt(3, votes);
+            statement.setLong(4, timestamp);
+            statement.setInt(5, queued);
+            statement.setString(6, name);
+            statement.setInt(7, votes);
+            statement.setLong(8, timestamp);
+            statement.setInt(9, queued);
+            return true;
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public String selectStatment(UUID player){
-        return new SelectQuery().addFromTable(voteStats).addAllColumns().addCondition(BinaryCondition.equalTo(this.uuid.getColumnNameSQL(),player.toString())).validate().toString();
+        return new SelectQuery().addFromTable(voteStats).addAllColumns().addCondition(BinaryCondition.equalTo("PlayerUUID", player.toString())).validate().toString().replace("t0 ", "");
     }
 
 

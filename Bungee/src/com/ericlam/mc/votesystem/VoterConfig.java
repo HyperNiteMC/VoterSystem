@@ -25,6 +25,9 @@ public class VoterConfig extends ConfigSetter {
     @Extract(name = "whitelist")
     private List<String> whitelistedServers;
 
+    @Extract
+    private boolean debug;
+
     public VoterConfig(Plugin plugin) {
         super(plugin, "config.yml");
     }
@@ -37,5 +40,6 @@ public class VoterConfig extends ConfigSetter {
         this.rewardBroadcast = config.getBoolean("reward.broadcast");
         this.spigotCommands = config.getStringList("reward.spigot-commands");
         this.whitelistedServers = config.getStringList("whitelist-servers");
+        this.debug = config.getBoolean("debug");
     }
 }

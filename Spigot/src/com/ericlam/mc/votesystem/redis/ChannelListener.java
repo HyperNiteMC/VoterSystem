@@ -11,20 +11,24 @@ import java.util.UUID;
 
 public class ChannelListener extends JedisPubSub {
 
-    private String server;
     private VoteDataManager voteDataManager;
     private VoteHandler voteHandler;
 
-    public ChannelListener(String server) {
-        this.server = server;
+    public ChannelListener() {
         this.voteDataManager = VoteDataManager.getInstance();
         this.voteHandler = new VoteHandler();
     }
 
     @Override
+    public void onSubscribe(String channel, int subscribedChannels) {
+        VoterSystemSpigot.debug("Subscribed Channel " + channel);
+    }
+
+    @Override
     public void onMessage(String channel, String message) {
+        VoterSystemSpigot.debug("received redis messages: " + message);
+        System.out.println(message);
         Bukkit.getScheduler().runTaskAsynchronously(VoterSystemSpigot.plugin, () -> {
-            if (!channel.equalsIgnoreCase("Vote-Master") && !channel.equalsIgnoreCase("Vote-" + server)) return;
             String[] params = message.split("_");
             String method = params[0].toLowerCase();
             String[] args = Arrays.copyOfRange(params, 1, params.length);

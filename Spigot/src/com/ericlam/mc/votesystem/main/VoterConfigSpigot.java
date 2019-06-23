@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class VoterConfigSpigot extends ConfigSetter {
 
-    @Extract
+    @Extract(name = "server")
     private String server;
 
     VoterConfigSpigot(Plugin plugin) {

@@ -139,6 +139,7 @@ public class VoteStatsManager {
      */
 
     public boolean checkTimeStamp(UUID player, long timestamp){
+        if (!this.hasVotedToday(player)) return true;
         if (timestamp - stats.get(player).getTimeStamp() < TimeUnit.DAYS.toMillis(1)) return false;
         stats.get(player).setVotedToday(false);
         return true;

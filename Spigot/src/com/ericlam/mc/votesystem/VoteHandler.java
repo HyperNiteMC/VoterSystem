@@ -24,6 +24,7 @@ public class VoteHandler {
                 return;
             }
             commands.forEach(c -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), c.replace("<player>", player.getName())));
+            VoterSystemSpigot.debug("Successfully executed commands to " + player.getName());
         });
     }
 }

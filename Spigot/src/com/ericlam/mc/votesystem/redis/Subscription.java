@@ -12,6 +12,7 @@ public class Subscription {
     }
 
     public JedisPubSub getJedisPubSub() {
+        if (jedisPubSub == null) jedisPubSub = new ChannelListener();
         return jedisPubSub;
     }
 

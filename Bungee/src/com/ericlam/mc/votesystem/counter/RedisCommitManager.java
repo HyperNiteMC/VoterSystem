@@ -1,6 +1,7 @@
 package com.ericlam.mc.votesystem.counter;
 
 import com.ericlam.mc.bungee.hnmc.config.ConfigManager;
+import com.ericlam.mc.votesystem.VoterUtils;
 import com.ericlam.mc.votesystem.global.RedisManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import redis.clients.jedis.Jedis;
@@ -28,6 +29,7 @@ public class RedisCommitManager {
         map.put("vote",stats.getVotes()+"");
         map.put("is-voted-today",stats.isVotedToday()+"");
         jedis.hmset(player.toString(), map);
+        VoterUtils.debug("committed " + player + " stats to redis");
     }
 
     public void commitVote(UUID player, int vote){
@@ -84,23 +86,26 @@ public class RedisCommitManager {
 
     public void notifyUpdate(){
         try(Jedis jedis = RedisManager.getInstance().getRedis()){
-            jedis.publish("Vote-Slave","UPDATE");
+            this.notifyUpdate(jedis);
+
         }
     }
 
     public void notifyUpdate(UUID player) {
         try (Jedis jedis = RedisManager.getInstance().getRedis()) {
-            jedis.publish("Vote-Slave", "UPDATE_" + player.toString());
+            this.notifyUpdate(jedis, player);
         }
     }
 
 
     private void notifyUpdate(Jedis jedis){
         jedis.publish("Vote-Slave","UPDATE");
+        VoterUtils.debug("notified slave to update their cache.");
     }
 
     private void notifyUpdate(Jedis jedis, UUID player) {
         jedis.publish("Vote-Slave", "UPDATE_" + player.toString());
+        VoterUtils.debug("notified slave to update " + player.toString() + " cache.");
     }
 
     public void publish(ProxiedPlayer player, int votes){
@@ -108,6 +113,7 @@ public class RedisCommitManager {
         String server = player.getServer().getInfo().getName();
         try(Jedis jedis = RedisManager.getInstance().getRedis()){
             jedis.publish("Vote-"+server,"REWARD_"+uuid+"_"+votes);
+            VoterUtils.debug("notified slave to reward " + uuid + " " + votes + " times in server: " + server);
         }
     }
 

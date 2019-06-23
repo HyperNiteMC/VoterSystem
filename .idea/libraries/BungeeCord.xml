@@ -4,7 +4,6 @@
       <root url="jar://$PROJECT_DIR$/../LIBRARY-SERVER/BungeeCord.jar!/" />
       <root url="jar://$PROJECT_DIR$/../LIBRARY-PLUGINS/nuvotifier.jar!/" />
       <root url="jar://$PROJECT_DIR$/../LIBRARY-PLUGINS/HyperNite-Bungee-API.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../LIBRARY-OTHERS/sqlbuilder-3.0.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
