@@ -22,7 +22,7 @@ public class VoteCommand extends CommandNode {
             return;
         }
         ProxiedPlayer player = (ProxiedPlayer) commandSender;
-        if (!VoterUtils.inLobby(player)){
+        if (VoterUtils.notInLobby(player)) {
             MessageBuilder.sendMessage(player, VoterSystemBungee.getConfigManager().getMessage("messages.not-in-lobby"));
             return;
         }

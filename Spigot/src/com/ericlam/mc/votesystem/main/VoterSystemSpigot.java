@@ -26,9 +26,9 @@ public class VoterSystemSpigot extends JavaPlugin {
         configManager.setMsgConfig("server.yml");
         String server = configManager.getData("server", String.class).orElse("Unknown");
 
-        System.out.println(server);
-
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> VoteDataManager.getInstance().initializeRedis(this, server));
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            VoteDataManager.getInstance().initializeRedis(this, server);
+        });
 
         if (this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             this.getLogger().info("Found PlaceHolderAPI, Hooking...");

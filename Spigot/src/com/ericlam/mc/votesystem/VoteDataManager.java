@@ -10,15 +10,12 @@ import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.exceptions.JedisException;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class VoteDataManager {
     private static VoteDataManager voteDataManager;
     private Map<UUID, VoteData> voteDataMap = new HashMap<>();
-    private List<String> rewardCommands;
+    private List<String> rewardCommands = new ArrayList<>();
 
 
     public static VoteDataManager getInstance() {
@@ -35,15 +32,22 @@ public class VoteDataManager {
 
     public void initializeRedis(Plugin plugin, String server){
         try(Jedis redis = RedisManager.getInstance().getRedis()){
+            VoterSystemSpigot.debug("Initializing Redis...");
+            this.getSpigotCommand(redis);
             Subscription subscribe = Subscription.getInstance();
             subscribe.setJedisPubSub(new ChannelListener());
             JedisPubSub sub = subscribe.getJedisPubSub();
             redis.subscribe(sub, "Vote-Slave", "Vote-"+server);
-            this.rewardCommands = redis.lrange("Vote-Reward-Command", 0, -1);
         }catch (JedisException e){
             plugin.getLogger().warning("Cannot connect to jedis server, disabling this plugin");
             plugin.getServer().getPluginManager().disablePlugin(plugin);
         }
+    }
+
+    private void getSpigotCommand(Jedis redis) {
+        VoterSystemSpigot.debug("Getting spigot reward commands");
+        this.rewardCommands = redis.lrange("Vote-Reward-Command", 0, -1);
+        VoterSystemSpigot.debug("Spigot commands: " + this.rewardCommands.toString());
     }
 
 
@@ -78,6 +82,7 @@ public class VoteDataManager {
             voteData = new VoteData(vote, voted);
         }
         voteDataMap.put(player, voteData);
+        VoterSystemSpigot.debug("Getting completed.");
         return voteData;
     }
 
@@ -86,9 +91,8 @@ public class VoteDataManager {
             for (UUID player : voteDataMap.keySet()) {
                 this.getVoteDataFromRedis(jedis, player);
             }
-            this.rewardCommands = jedis.lrange("Vote-Reward-Command", 0, -1);
+            this.getSpigotCommand(jedis);
         }
     }
-
 
 }

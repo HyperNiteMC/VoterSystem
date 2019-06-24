@@ -9,8 +9,11 @@ import java.util.Map;
 
 public class VoterConfigSpigot extends ConfigSetter {
 
-    @Extract(name = "server")
+    @Extract
     private String server;
+
+    @Extract
+    private boolean debug;
 
     VoterConfigSpigot(Plugin plugin) {
         super(plugin, "server.yml");
@@ -18,6 +21,7 @@ public class VoterConfigSpigot extends ConfigSetter {
 
     @Override
     public void loadConfig(Map<String, FileConfiguration> map) {
-        this.server = map.get("server.yml").getString("server");
+        this.server = map.get("server.yml").getString("server-name");
+        this.debug = map.get("server.yml").getBoolean("debug");
     }
 }

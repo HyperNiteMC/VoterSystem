@@ -24,9 +24,9 @@ public class VoterUtils {
         return players;
     }
 
-    public static boolean inLobby(ProxiedPlayer voter){
+    public static boolean notInLobby(ProxiedPlayer voter) {
         List<String> whitelist = VoterSystemBungee.getConfigManager().getDataList("whitelist",String.class);
-        return whitelist.stream().anyMatch(list->voter.getServer().getInfo().getName().matches(list));
+        return whitelist.stream().noneMatch(list -> voter.getServer().getInfo().getName().matches(list));
     }
 
     public static boolean isLobby(ServerInfo server){
@@ -53,7 +53,7 @@ public class VoterUtils {
         RedisCommitManager redisCommitManager = RedisCommitManager.getInstance();
         boolean broadcast = configManager.getData("rbc",Boolean.class).orElse(false);
         if (broadcast)
-            VoterUtils.getWhiteListPlayers().forEach(p -> MessageBuilder.sendMessage(p, configManager.getMessage("reward.broadcast-message").replace("<name>", voter.getName())));
+            VoterUtils.getWhiteListPlayers().forEach(p -> MessageBuilder.sendMessage(p, configManager.getMessage("reward.broadcast-message").replace("<player>", voter.getName())));
         new MessageBuilder(configManager.getMessageList("reward.messages",true)).sendPlayer(voter);
         redisCommitManager.publish(voter, votes);
     }

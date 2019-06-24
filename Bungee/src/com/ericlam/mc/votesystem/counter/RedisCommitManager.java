@@ -77,6 +77,7 @@ public class RedisCommitManager {
     public void commitSpigotCommands(ConfigManager configManager){
         List<String> spigotCommands = configManager.getDataList("spi-cmd",String.class);
         try(Jedis jedis = RedisManager.getInstance().getRedis()){
+            VoterUtils.debug("uploading reward commands...");
             for (String s : spigotCommands) {
                 jedis.lpush("Vote-Reward-Command", s);
             }

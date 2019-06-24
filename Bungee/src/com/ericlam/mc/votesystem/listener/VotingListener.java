@@ -55,7 +55,7 @@ public class VotingListener implements Listener, ForwardedVoteListener {
 
                 voteStatsManager.setTimeStamp(voter.getUniqueId(), voteTime);
 
-                if (!voter.isOnline() || !VoterUtils.inLobby(voter.getPlayer())) {
+                if (!voter.isOnline() || VoterUtils.notInLobby(voter.getPlayer())) {
                     int queue = stats.getQueueVote();
                     stats.setQueueVote(++queue);
                     VoterUtils.debug(voter.getName() + " is not in lobby server or is not online, added to queue votes...");

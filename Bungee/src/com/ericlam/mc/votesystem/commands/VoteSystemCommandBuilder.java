@@ -56,7 +56,7 @@ public class VoteSystemCommandBuilder {
                             return;
                         }
                         OfflinePlayer target = offlinePlayer.get();
-                        if (!VoterUtils.inLobby(target.getPlayer())) {
+                        if (VoterUtils.notInLobby(target.getPlayer())) {
                             MessageBuilder.sendMessage(commandSender, configManager.getMessage("messages.player-not-in-lobby"));
                             return;
                         }

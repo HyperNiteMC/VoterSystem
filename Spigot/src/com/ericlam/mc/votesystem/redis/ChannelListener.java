@@ -27,7 +27,6 @@ public class ChannelListener extends JedisPubSub {
     @Override
     public void onMessage(String channel, String message) {
         VoterSystemSpigot.debug("received redis messages: " + message);
-        System.out.println(message);
         Bukkit.getScheduler().runTaskAsynchronously(VoterSystemSpigot.plugin, () -> {
             String[] params = message.split("_");
             String method = params[0].toLowerCase();
