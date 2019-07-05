@@ -3,10 +3,8 @@ package com.ericlam.mc.votesystem;
 import com.ericlam.mc.votesystem.global.RedisManager;
 import com.ericlam.mc.votesystem.main.VoterSystemSpigot;
 import com.ericlam.mc.votesystem.redis.ChannelListener;
-import com.ericlam.mc.votesystem.redis.Subscription;
 import org.bukkit.plugin.Plugin;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.exceptions.JedisException;
 
 import javax.annotation.Nonnull;
@@ -34,10 +32,7 @@ public class VoteDataManager {
         try(Jedis redis = RedisManager.getInstance().getRedis()){
             VoterSystemSpigot.debug("Initializing Redis...");
             this.getSpigotCommand(redis);
-            Subscription subscribe = Subscription.getInstance();
-            subscribe.setJedisPubSub(new ChannelListener());
-            JedisPubSub sub = subscribe.getJedisPubSub();
-            redis.subscribe(sub, "Vote-Slave", "Vote-"+server);
+            redis.subscribe(new ChannelListener(), "Vote-Slave", "Vote-" + server);
         }catch (JedisException e){
             plugin.getLogger().warning("Cannot connect to jedis server, disabling this plugin");
             plugin.getServer().getPluginManager().disablePlugin(plugin);
