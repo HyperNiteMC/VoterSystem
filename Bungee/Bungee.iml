@@ -34,7 +34,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="BungeeCord" level="project" />
     <orderEntry type="library" name="commons-pool2-2.6.0" level="project" />
-    <orderEntry type="module" module-name="VoterSystem" scope="PROVIDED" />
     <orderEntry type="library" name="sqlbuilder-3.0.0" level="project" />
+    <orderEntry type="module" module-name="VoterSystem" />
   </component>
 </module>
