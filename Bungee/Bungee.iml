@@ -3,23 +3,8 @@
   <component name="FacetManager">
     <facet type="minecraft" name="Minecraft">
       <configuration>
-        <userChosenTypes>
-          <map>
-            <entry key="PAPER" value="false" />
-            <entry key="SPIGOT" value="false" />
-            <entry key="BUKKIT" value="false" />
-            <entry key="FORGE" value="false" />
-            <entry key="SPONGE" value="false" />
-            <entry key="WATERFALL" value="false" />
-            <entry key="BUNGEECORD" value="true" />
-            <entry key="LITELOADER" value="false" />
-            <entry key="MIXIN" value="false" />
-            <entry key="MCP" value="false" />
-          </map>
-        </userChosenTypes>
         <autoDetectTypes>
-          <platformType>PAPER</platformType>
-          <platformType>BUNGEECORD</platformType>
+          <platformType>WATERFALL</platformType>
         </autoDetectTypes>
       </configuration>
     </facet>
@@ -32,9 +17,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="BungeeCord" level="project" />
-    <orderEntry type="library" name="commons-pool2-2.6.0" level="project" />
-    <orderEntry type="library" name="sqlbuilder-3.0.0" level="project" />
     <orderEntry type="module" module-name="VoterSystem" />
+    <orderEntry type="library" name="HyperNite-Bungee-API" level="project" />
+    <orderEntry type="library" name="commons-pool2-2.6.0" level="project" />
   </component>
 </module>

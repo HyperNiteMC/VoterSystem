@@ -2,6 +2,7 @@ package com.ericlam.mc.votesystem.main;
 
 import com.ericlam.mc.votesystem.VoteDataManager;
 import com.ericlam.mc.votesystem.VoteDataPlaceHolder;
+import com.ericlam.mc.votesystem.global.RedisManager;
 import com.hypernite.mc.hnmc.core.main.HyperNiteMC;
 import com.hypernite.mc.hnmc.core.managers.ConfigManager;
 import org.bukkit.Bukkit;
@@ -17,6 +18,11 @@ public class VoterSystemSpigot extends JavaPlugin {
     public static void debug(String msg) {
         if (!configManager.getData("debug", Boolean.class).orElse(false)) return;
         plugin.getLogger().info("[DEBUG] " + msg);
+    }
+
+    @Override
+    public void onLoad() {
+        RedisManager.getInstance();
     }
 
     @Override

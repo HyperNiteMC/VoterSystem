@@ -1,6 +1,6 @@
 name: VoterSystem
 main: com.ericlam.mc.votesystem.main.VoterSystemSpigot
-version: 1.5.8-SNAPSHOT
+version: 1.6.3
 author: Hydranapse_
 depend: [HyperNiteMC-Core]
 softdepend: [PlaceholderAPI]
