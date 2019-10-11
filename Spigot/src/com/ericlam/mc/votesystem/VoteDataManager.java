@@ -15,6 +15,7 @@ public class VoteDataManager {
     private static VoteDataManager voteDataManager;
     private Map<UUID, VoteData> voteDataMap = new HashMap<>();
     private List<String> rewardCommands = new ArrayList<>();
+    boolean launched = false;
 
 
     public static VoteDataManager getInstance() {
@@ -34,9 +35,11 @@ public class VoteDataManager {
             VoterSystemSpigot.debug("Initializing Redis...");
             this.getSpigotCommand(redis);
             redis.subscribe(new ChannelListener(), "Vote-Slave", "Vote-" + server);
+            launched = true;
         }catch (JedisException e){
             plugin.getLogger().warning("Cannot connect to Redis server: " + e.getMessage());
             plugin.getLogger().warning("Retry after 1 minute");
+            launched = false;
             Bukkit.getScheduler().runTaskLaterAsynchronously(VoterSystemSpigot.plugin, () -> initializeRedis(plugin, server), 20 * 60);
         }
     }

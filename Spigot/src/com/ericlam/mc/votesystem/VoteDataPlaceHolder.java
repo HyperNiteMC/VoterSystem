@@ -24,6 +24,9 @@ public class VoteDataPlaceHolder extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player p, String params) {
         UUID uuid = p.getUniqueId();
+        if (!voteDataManager.launched) {
+            return "(資料獲取失敗, 稍後再嘗試)";
+        }
         VoteData data = voteDataManager.getVoteData(uuid);
         switch (params.toLowerCase()) {
             case "votes":
