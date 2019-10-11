@@ -28,7 +28,7 @@ public class VoterSystemSpigot extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        YamlManager yamlManager = HyperNiteMC.getAPI().getFactory().getConfigFactory(this).register("servers.yml", VoterConfig.class).dump();
+        YamlManager yamlManager = HyperNiteMC.getAPI().getFactory().getConfigFactory(this).register("server.yml", VoterConfig.class).dump();
         voterConfig = yamlManager.getConfigAs(VoterConfig.class);
         String server = voterConfig.getServer();
 
