@@ -4,7 +4,7 @@ import com.ericlam.mc.votesystem.VoteDataManager;
 import com.ericlam.mc.votesystem.VoteDataPlaceHolder;
 import com.ericlam.mc.votesystem.global.RedisManager;
 import com.hypernite.mc.hnmc.core.main.HyperNiteMC;
-import com.hypernite.mc.hnmc.core.managers.ConfigManager;
+import com.hypernite.mc.hnmc.core.managers.YamlManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,10 +13,10 @@ public class VoterSystemSpigot extends JavaPlugin {
 
     public static Plugin plugin;
 
-    private static ConfigManager configManager;
+    private static VoterConfig voterConfig;
 
     public static void debug(String msg) {
-        if (!configManager.getData("debug", Boolean.class).orElse(false)) return;
+        if (!voterConfig.isDebug()) return;
         plugin.getLogger().info("[DEBUG] " + msg);
     }
 
@@ -28,9 +28,9 @@ public class VoterSystemSpigot extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        configManager = HyperNiteMC.getAPI().registerConfig(new VoterConfigSpigot(this));
-        configManager.setMsgConfig("server.yml");
-        String server = configManager.getData("server", String.class).orElse("Unknown");
+        YamlManager yamlManager = HyperNiteMC.getAPI().getFactory().getConfigFactory(this).register("servers.yml", VoterConfig.class).dump();
+        voterConfig = yamlManager.getConfigAs(VoterConfig.class);
+        String server = voterConfig.getServer();
 
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             VoteDataManager.getInstance().initializeRedis(this, server);
@@ -38,7 +38,7 @@ public class VoterSystemSpigot extends JavaPlugin {
 
         if (this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             this.getLogger().info("Found PlaceHolderAPI, Hooking...");
-            new VoteDataPlaceHolder(this, configManager).register();
+            new VoteDataPlaceHolder(this, voterConfig).register();
         }
 
         this.getLogger().info(this.getDescription().getFullName() + " Enabled.");
