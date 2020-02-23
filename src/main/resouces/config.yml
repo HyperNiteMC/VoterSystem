@@ -1,0 +1,44 @@
+# This file is from bungeecord
+reward:
+  spigotCommands:
+    - say give <player> money 500
+    - say <player> has voted
+  messages:
+    - "&a感謝你投票予我們! 你已獲得金錢500元作為獎勵。"
+  broadcast: true
+  broadcastMessage: "&e公告: &b<player> voted!"
+
+announcement:
+  messages:
+    - "&e別忘了每天投票!"
+    - "&e你目前投了 <vote> 票。"
+  onJoin: true
+  interval: 500
+
+voteMessages:
+  - "&e投票網址:"
+  - "   &ahttps://hypernite.com"
+
+
+debug: true
+
+
+# only these servers will enable voting
+whitelistServers:
+  - Lobby
+  - \w+lobby
+
+messages:
+  prefix: "&2投票系統// &7"
+  not-in-lobby: "&c你目前不在大堂，無法使用此指令。"
+  player-not-in-lobby: "&c對象目前不在大堂，無法使用此指令。"
+  votes: "<name> 的票數是 <vote>。"
+  simulate: "模擬成功。"
+  is-voted-today: "&7<name> 在 今天 &e<var>&7 投過票。"
+  not-number: "&cb無效的數值。"
+  set: "成功設置 <name> 的 票數為 <vote>。"
+  add: "已成功添加 <amount> 票 予 <name> , 他/她目前票數為 <vote>。"
+  remove: "已成功扣減 <amount> 票 予 <name> , 他/她目前票數為 <vote>。"
+  zero: "<name> 的票數目前已是 0。"
+  cancel: "成功解除 <name> 的冷卻狀態。"
+  already-cancel: "<name> 目前並無冷卻狀態"

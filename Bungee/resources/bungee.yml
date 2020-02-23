@@ -1,6 +1,0 @@
-name: VoterSystem
-main: com.ericlam.mc.votesystem.main.VoterSystemBungee
-version: 1.6.3
-author: Hydranapse_
-depends: [HyperNiteMC-Bungee, NuVotifier]
-description: Server Voting Plugin

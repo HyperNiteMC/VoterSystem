@@ -1,0 +1,7 @@
+name: VoterSystem
+main: com.ericlam.mc.votesystem.spigot.main.VoterSystemSpigot
+version: ${project.version}
+author: Hydranapse_
+depend: [HyperNiteMC-Core]
+softdepend: [PlaceholderAPI]
+description: Server Voting Plugin

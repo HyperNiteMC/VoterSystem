@@ -1,0 +1,8 @@
+# must follow the name in BungeeCord config.yml
+serverName: Lobby
+
+votedToday:
+  yes: "&e已經投票"
+  no: "&a尚未投票"
+
+debug: true
