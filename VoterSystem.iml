@@ -28,7 +28,8 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.vexsoftware:nuvotifier-bungeecord:2.6.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.vexsoftware:nuvotifier-sponge:2.6.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.vexsoftware:nuvotifier-velocity:2.6.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.hypernite.mc:core-api:7.5.7" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.hypernite.mc:core-api:7.5.9" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.hypernite.mc:bungee-api:2.5.8" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: commons-lang:commons-lang:2.6" level="project" />

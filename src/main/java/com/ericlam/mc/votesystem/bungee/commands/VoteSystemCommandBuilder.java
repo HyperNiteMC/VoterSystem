@@ -198,7 +198,7 @@ public class VoteSystemCommandBuilder {
                 .alias("refresh")
                 .permission(Perm.ADMIN)
                 .description("強制更新 Redis 資料")
-                .execute((commandSender, list) -> CompletableFuture.runAsync(() -> mySQLManager.updateRedis()).whenComplete((v, e) -> {
+                .execute((commandSender, list) -> CompletableFuture.runAsync(mySQLManager::updateRedis).whenComplete((v, e) -> {
                     if (e == null) {
                         MessageBuilder.sendMessage(commandSender, "§a強制更新成功。");
                     } else {

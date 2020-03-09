@@ -10,9 +10,9 @@ import com.ericlam.mc.votesystem.bungee.main.VoterSystemBungee;
 import com.vexsoftware.votifier.bungee.events.VotifierEvent;
 import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.support.forwarding.ForwardedVoteListener;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.ServerConnectedEvent;
-import net.md_5.bungee.api.event.ServerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
@@ -80,12 +80,13 @@ public class VotingListener implements Listener, ForwardedVoteListener {
     }
 
     @EventHandler
-    public void onPlayerQuit(ServerDisconnectEvent e){
-        VoterUtils.runAsync(()->voteMySQLManager.saveVote(e.getPlayer().getUniqueId()));
+    public void onPlayerQuit(PlayerDisconnectEvent e) {
+        VoterUtils.runAsync(() -> voteMySQLManager.saveVote(e.getPlayer().getUniqueId()));
     }
 
     @EventHandler
     public void onServerSwitch(ServerConnectedEvent e){
+        if (!VoterUtils.isLobby(e.getServer().getInfo())) return;
         HyperNiteMC.getAPI().getPlayerManager().getOfflinePlayer(e.getPlayer().getName()).whenCompleteAsync((p, ex) -> {
             if (p.isEmpty()) {
                 VoterUtils.debug("cannot get offline data of " + e.getPlayer().getName());
@@ -93,7 +94,6 @@ public class VotingListener implements Listener, ForwardedVoteListener {
             }
             OfflinePlayer player = p.get();
             if (ex == null) {
-                if (!VoterUtils.isLobby(e.getServer().getInfo())) return;
                 int queued = voteStatsManager.getQueuedVote(player.getUniqueId());
                 if (queued < 1) return;
                 VoterUtils.reward(player.getPlayer(), queued);

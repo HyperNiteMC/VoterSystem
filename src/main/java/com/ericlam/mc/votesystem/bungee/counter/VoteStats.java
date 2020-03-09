@@ -24,7 +24,7 @@ public class VoteStats {
     }
 
     public void setVotes(int votes) {
-        Votes = votes < 0 ? 0 : votes;
+        Votes = Math.max(votes, 0);
         isChanged = true;
     }
 
