@@ -17,18 +17,20 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
+import java.util.List;
+
 public class VotingListener implements Listener, ForwardedVoteListener {
 
-    private VoteMySQLManager voteMySQLManager;
-    private VoteStatsManager voteStatsManager;
+    private final VoteMySQLManager voteMySQLManager;
+    private final VoteStatsManager voteStatsManager;
 
-    public VotingListener() {
-        this.voteMySQLManager = VoterSystemBungee.INSTANCE.getVoteMySQLManager();
-        this.voteStatsManager = VoterSystemBungee.INSTANCE.getVoteStatsManager();
+    public VotingListener(VoteStatsManager voteStatsManager, VoteMySQLManager voteMySQLManager) {
+        this.voteMySQLManager = voteMySQLManager;
+        this.voteStatsManager = voteStatsManager;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onVotingRecived(VotifierEvent e){
+    public void onVoteReceived(VotifierEvent e) {
         Vote vote = e.getVote();
         this.onForward(vote);
     }
@@ -75,8 +77,11 @@ public class VotingListener implements Listener, ForwardedVoteListener {
     }
 
     @EventHandler
-    public void onPlayerJoin(PostLoginEvent e){
-        VoterUtils.runAsync(()->voteMySQLManager.getPlayerVote(e.getPlayer().getUniqueId()));
+    public void onPlayerJoin(PostLoginEvent e) {
+        VoterUtils.runAsync(() -> voteMySQLManager.getPlayerVote(e.getPlayer().getUniqueId()));
+        if (VoterSystemBungee.voterConfig.announcement.onJoin) {
+            VoterSystemBungee.sendAnnouncement(List.of(e.getPlayer()));
+        }
     }
 
     @EventHandler
@@ -85,7 +90,7 @@ public class VotingListener implements Listener, ForwardedVoteListener {
     }
 
     @EventHandler
-    public void onServerSwitch(ServerConnectedEvent e){
+    public void onServerSwitch(ServerConnectedEvent e) {
         if (!VoterUtils.isLobby(e.getServer().getInfo())) return;
         HyperNiteMC.getAPI().getPlayerManager().getOfflinePlayer(e.getPlayer().getName()).whenCompleteAsync((p, ex) -> {
             if (p.isEmpty()) {

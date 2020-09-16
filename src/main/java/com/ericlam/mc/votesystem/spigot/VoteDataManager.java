@@ -14,7 +14,7 @@ import java.util.*;
 
 public class VoteDataManager {
 
-    private Map<UUID, VoteData> voteDataMap = new HashMap<>();
+    private final Map<UUID, VoteData> voteDataMap = new HashMap<>();
     private List<String> rewardCommands = new ArrayList<>();
     boolean launched = false;
 

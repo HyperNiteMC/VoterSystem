@@ -1,14 +1,13 @@
 package com.ericlam.mc.votesystem.bungee.counter;
 
 import com.ericlam.mc.votesystem.bungee.VoterUtils;
-import com.ericlam.mc.votesystem.bungee.main.VoterSystemBungee;
 
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class VoteStatsManager {
-    private HashMap<UUID, VoteStats> stats = new HashMap<>();
+    private final HashMap<UUID, VoteStats> stats = new HashMap<>();
 
     /*
         Map Handle
@@ -16,8 +15,8 @@ public class VoteStatsManager {
 
     private final RedisCommitManager redisCommitManager;
 
-    public VoteStatsManager() {
-        this.redisCommitManager = VoterSystemBungee.INSTANCE.getRedisCommitManager();
+    public VoteStatsManager(RedisCommitManager redisCommitManager) {
+        this.redisCommitManager = redisCommitManager;
     }
 
     void putVote(UUID player, VoteStats vote) {

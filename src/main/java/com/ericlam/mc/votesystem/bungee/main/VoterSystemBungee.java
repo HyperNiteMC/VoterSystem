@@ -12,8 +12,10 @@ import com.ericlam.mc.votesystem.bungee.counter.VoteMySQLManager;
 import com.ericlam.mc.votesystem.bungee.counter.VoteStatsManager;
 import com.ericlam.mc.votesystem.bungee.listener.VotingListener;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class VoterSystemBungee extends Plugin {
@@ -27,11 +29,13 @@ public class VoterSystemBungee extends Plugin {
 
     private static void launchAnnouncement() {
         int interval = voterConfig.announcement.interval;
-        ProxyServer.getInstance().getScheduler().schedule(INSTANCE, () -> {
-            for (String line : voterConfig.getList("announcement.messages")) {
-                VoterUtils.getWhiteListPlayers().forEach(p -> MessageBuilder.sendMessage(p, line.replace("<vote>", VoterSystemBungee.INSTANCE.voteStatsManager.getVotes(p.getUniqueId()) + "")));
-            }
-        }, interval, interval, TimeUnit.SECONDS);
+        ProxyServer.getInstance().getScheduler().schedule(INSTANCE, () -> sendAnnouncement(VoterUtils.getWhiteListPlayers()), interval, interval, TimeUnit.SECONDS);
+    }
+
+    public static void sendAnnouncement(List<ProxiedPlayer> players) {
+        for (String line : voterConfig.getList("announcement.messages")) {
+            players.forEach(p -> MessageBuilder.sendMessage(p, line.replace("<vote>", VoterSystemBungee.INSTANCE.voteStatsManager.getVotes(p.getUniqueId()) + "")));
+        }
     }
 
     @Override
@@ -39,9 +43,9 @@ public class VoterSystemBungee extends Plugin {
         INSTANCE = this;
         var manager = HyperNiteMC.getAPI().getConfigFactory(this).register(VoterConfig.class).dump();
         voterConfig = manager.getConfigAs(VoterConfig.class);
-        voteStatsManager = new VoteStatsManager(); //1
-        redisCommitManager = new RedisCommitManager(); //2
-        voteMySQLManager = new VoteMySQLManager(); //3
+        redisCommitManager = new RedisCommitManager();
+        voteStatsManager = new VoteStatsManager(redisCommitManager);
+        voteMySQLManager = new VoteMySQLManager(voteStatsManager, redisCommitManager);
         VoterUtils.runAsync(() -> {
             voteMySQLManager.createDatabase();
             redisCommitManager.commitSpigotCommands(voterConfig);
@@ -49,7 +53,7 @@ public class VoterSystemBungee extends Plugin {
         CommandRegister commandRegister = HyperNiteMC.getAPI().getCommandRegister();
         commandRegister.registerCommand(this, new VoteCommand());
         commandRegister.registerCommand(this, new VoteSystemCommandBuilder(this).getDefaultCommand());
-        this.getProxy().getPluginManager().registerListener(this, new VotingListener());
+        this.getProxy().getPluginManager().registerListener(this, new VotingListener(voteStatsManager, voteMySQLManager));
 
         launchAnnouncement();
 

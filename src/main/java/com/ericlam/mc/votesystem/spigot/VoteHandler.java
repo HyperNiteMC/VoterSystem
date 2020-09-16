@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class VoteHandler {
 
-    private Plugin plugin;
+    private final Plugin plugin;
 
     public VoteHandler() {
         this.plugin = VoterSystemSpigot.INSTANCE;

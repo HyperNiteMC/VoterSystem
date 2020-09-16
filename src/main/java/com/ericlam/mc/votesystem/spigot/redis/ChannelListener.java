@@ -11,8 +11,8 @@ import java.util.UUID;
 
 public class ChannelListener extends JedisPubSub {
 
-    private VoteDataManager voteDataManager;
-    private VoteHandler voteHandler;
+    private final VoteDataManager voteDataManager;
+    private final VoteHandler voteHandler;
 
     public ChannelListener(VoteDataManager dataManager) {
         this.voteDataManager = dataManager;

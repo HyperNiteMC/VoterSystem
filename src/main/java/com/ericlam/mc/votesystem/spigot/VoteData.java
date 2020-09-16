@@ -1,8 +1,8 @@
 package com.ericlam.mc.votesystem.spigot;
 
 public class VoteData {
-    private int votes;
-    private boolean votedToday;
+    private final int votes;
+    private final boolean votedToday;
 
     public VoteData(int votes, boolean votedToday) {
         this.votes = votes;

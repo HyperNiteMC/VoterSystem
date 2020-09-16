@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class VoteSystemCommandBuilder {
 
-    private DefaultCommand defaultCommand;
+    private final DefaultCommand defaultCommand;
 
     public VoteSystemCommandBuilder(VoterSystemBungee bungee) {
         var msg = VoterSystemBungee.voterConfig;

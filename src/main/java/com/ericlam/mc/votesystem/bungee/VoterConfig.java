@@ -10,7 +10,6 @@ public class VoterConfig extends MessageConfiguration {
 
     public Reward reward;
     public Announcement announcement;
-    public List<String> voteMessages;
     public boolean debug;
     public List<String> whitelistServers;
 

@@ -23,21 +23,21 @@ import java.util.concurrent.ExecutionException;
 
  */
 public class VoteTable {
-    private DbTable voteStats;
-    private DbColumn uuid;
-    private DbColumn name;
-    private DbColumn votes;
-    private DbColumn timestamp;
-    private DbColumn queued;
+    private final DbTable voteStats;
+    private final DbColumn uuid;
+    private final DbColumn name;
+    private final DbColumn votes;
+    private final DbColumn timestamp;
+    private final DbColumn queued;
 
-    public VoteTable(){
+    public VoteTable() {
         this.voteStats = new DbSpec().addDefaultSchema().addTable("Vote_stats");
-        this.uuid = this.voteStats.addColumn("PlayerUUID","VARCHAR",40);
+        this.uuid = this.voteStats.addColumn("PlayerUUID", "VARCHAR", 40);
         this.uuid.primaryKey();
         this.uuid.notNull();
-        this.name = this.voteStats.addColumn("PlayerName","TINYTEXT",null);
+        this.name = this.voteStats.addColumn("PlayerName", "TINYTEXT", null);
         this.name.notNull();
-        this.votes = this.voteStats.addColumn("Votes","INT",null);
+        this.votes = this.voteStats.addColumn("Votes", "INT", null);
         this.votes.notNull();
         this.timestamp = this.voteStats.addColumn("TimeStamp","BIGINT",null);
         this.timestamp.notNull();
