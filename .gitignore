@@ -1,1 +1,5 @@
-.idea/*
+/.idea/
+/out/
+/target/
+*.iml
+dependency-reduced-pom.xml

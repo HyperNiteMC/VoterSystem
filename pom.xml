@@ -11,8 +11,8 @@
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>xuan</id>
-            <url>https://xuan.nctu.me:8081/repository/Maven/</url>
+            <id>hypernite</id>
+            <url>https://nexus.chu77.xyz/repository/developer/</url>
         </repository>
         <repository>
             <id>bungeecord-repo</id>
@@ -44,19 +44,19 @@
         <dependency>
             <groupId>com.hypernite.mc</groupId>
             <artifactId>core-api</artifactId>
-            <version>7.5.9</version>
+            <version>7.6.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.hypernite.mc</groupId>
             <artifactId>bungee-api</artifactId>
-            <version>2.6.0</version>
+            <version>2.6.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -74,7 +74,7 @@
         <dependency>
             <groupId>waterfall</groupId>
             <artifactId>1.16</artifactId>
-            <version>376</version>
+            <version>377</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
